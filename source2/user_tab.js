@@ -4,6 +4,7 @@ import logos from '../assets/images/home_icon.png';
 
 class TabUserScreen extends Component{
 render(){ 
+    console.warn(this.props.route);
     return (
         <View style={{ flex:1, alignItems:'center', justifyContent:'center'}}>
             <Text>User</Text>

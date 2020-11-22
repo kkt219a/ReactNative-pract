@@ -7,6 +7,12 @@ render(){
     return (
         <View style={{ flex:1, alignItems:'center', justifyContent:'center'}}>
             <Text>Home</Text>
+            <Button
+                title="go to home_stack screen"
+                onPress={() => {
+                    this.props.navigation.navigate('Home_Stack');
+                }}
+            />
         </View>
     )
   }
