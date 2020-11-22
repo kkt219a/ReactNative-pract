@@ -1,85 +1,77 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import Header from './source/header';
-import Generator from './source/generator';
-import NumList from './source/numlist';
-import Input from './source/input';
-import Picker from './source/picker';
-import picc from './assets/images/steak.png';
-import Modal from './source/modal';
+import { View, Text, StyleSheet,Image, Button, Linking } from 'react-native';
+
+import 'react-native-gesture-handler';
+import {NavigationContainer } from '@react-navigation/native';
+
+import LogoTitle from './source2/logo';
+import PictogramHome from './assets/images/home_icon.png';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import TabHomeScreen from './source2/home_tab';
+import TabUserScreen from './source2/user_tab';
+import TabMessageScreen from './source2/message_tab';
+const Tab = createBottomTabNavigator();
+
+  //1번째 인자는 focused라는 bolean, 2번째는 터치 되었느냐 판별 변수
+  //이미지를 커지게 하는 함수이다.
+const TabBarIcon=(focused, name)=>{
+  let iconImagePath;
+  if(name==='home'){
+    iconImagePath = require('./assets/images/home_icon.png');
+  }else if(name==='user'){
+    iconImagePath = require('./assets/images/home_icon.png');
+  }else if(name='message'){
+    iconImagePath = require('./assets/images/home_icon.png');
+  }
+
+  return (
+    <Image
+      style={{
+        width:focused?30:20,
+        height:focused?30:20
+      }}
+      source={iconImagePath}
+    />
+  )
+}
+
 class App extends Component{
 
-
-  state ={
-      myTextInput: '',
-      alphabet:['a','b','c','d']
-  }
-
-  //event 인자에 입력된 텍스트 값이 myTextInput으로 들어간다
-  onChangeInput=(event) =>{
-      this.setState({
-          myTextInput:event
-      })
-  }
-
-  //넣고나면 다음 것을 넣어야 하니까 비워두고 지금 값을 alphabet에 넣어준다.
-  onAddTextInput= () =>{
-    this.setState(prevState=>{
-      return {
-        myTextInput:'',
-        alphabet:[...prevState.alphabet,prevState.myTextInput]
-      }
-    })
-  }
-
-  render(){ 
+render(){ 
     return (
-      <View style={styles.mainView}>
-        <Modal />
-      </View>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName='home'
+          tabBarOptions={{
+            activeBackgroundColor:'skyblue',//터치시 배경
+            activeTintColor:'blue',//터치시 글자색
+            inactiveTintColor:"#fff", //비터치시 글자색
+            style:{
+              backgroundColor:'#c6cbef' //기본 배경색
+            },
+            labelPosition:'below-icon'
+            //beside-icon: icon 옆에 글자가 붙게
+            //below-icon: icon 밑에 글자가 오게
+          }}
+          //
+          screenOptions={({route})=>({
+              tabBarLabel:route.name,
+              tabBarIcon: ({focused})=>(
+                TabBarIcon(focused,route.name)
+              )
+            })}
+        >
+          <Tab.Screen name="home" component={TabHomeScreen}/>
+          <Tab.Screen name="user" component={TabUserScreen}/>
+          <Tab.Screen name="Message" component={TabMessageScreen}/>
+        </Tab.Navigator>
+      </NavigationContainer>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  mainView:{
-    backgroundColor:'white',
-    marginTop:50,
-    flex:1,
-    alignItems:'center',
-    //justifyContent:'center'
-  },
-  subView:{
-    backgroundColor:'yellow',
-    marginBottom:10
-  },
-  anothersubView:{
-    flex:2,
-    backgroundColor:'yellow',
-    marginBottom:10,
-    width:'100%',
-    alignItems:'center',
-    justifyContent:'center'
-  },
-  mainText:{
-    fontSize:20,
-    fontWeight:'normal',
-    color:'#1498f0',
-    padding:20,
-    margin:20,
-    backgroundColor:'#e5e5e5'
-  },
-  input:{
-    width:'100%',
-    backgroundColor:'#cecece',
-    marginTop:20,
-    fontSize:25,
-    padding:10
-  },
-  image:{
-    backgroundColor:'red',
-    width:'100%',
-    height:300
-  }
+
+
 })
 export default App;
